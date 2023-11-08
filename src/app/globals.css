@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  color: white;
+}
+
+.icon-btn svg {
+  @apply hover:fill-amber-200;
+}
+
+.icon-btn-active svg {
+  @apply fill-amber-400;
+}
