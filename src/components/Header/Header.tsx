@@ -1,63 +1,67 @@
-"use client"
+"use client";
 
 import { useState } from "react";
 
-import Icon from "../Icon/Icon";
+import Icon, { IconName } from "../Icon/Icon";
 
-enum ActionsToIcon {
-  sort = "list",
-  search = "search",
-  add = "add"
-}
+export type HeaderActionProps = {
+  iconName: IconName;
+  actionDescription: string;
+  actionNode: React.ReactNode;
+};
 
-export default function Header() {
-  const [activeAction, setActiveAction] = useState<null | ActionsToIcon>(null)
+export type HeaderProps = {
+  title: string;
+  actions: HeaderActionProps[];
+};
 
-  function handleClick(value: ActionsToIcon) {
+export default function Header({ title, actions }: HeaderProps) {
+  const [activeAction, setActiveAction] = useState<null | IconName>(null);
+
+  function handleClick(value: IconName) {
     if (value === activeAction) {
-      return setActiveAction(null)
+      return setActiveAction(null);
     }
-    setActiveAction(value)
+    setActiveAction(value);
   }
 
-  function getButtonTitle(value: ActionsToIcon) {
-    switch (value) {
-      case "add":
-        return "Add a new podcast";
-      case "search":
-        return "Search your podcasts"
-      default:
-        return "List Options"
-    }
+  function getActiveActionStyle(value: IconName) {
+    return value === activeAction ? "icon-btn-active" : "";
   }
 
-  function getActiveActionStyle(value: ActionsToIcon) {
-    return value === activeAction ? "icon-btn-active" : ""
-  }
+  const activeActionNode = actions.find(
+    (action) => action.iconName === activeAction
+  );
 
   return (
     <>
-    <header className="fixed z-30 h-12 w-full p-3 flex flex-row bg-zinc-700 align-center justify-between">
-      <h1>Your Podcasts</h1>
-      <section className="flex flex-row gap-3">
-        {Object.entries(ActionsToIcon).map(entry => {
-          const value = entry[1]
-          const className = `icon-btn ${getActiveActionStyle(entry[1])}`
+      <header className="fixed z-30 h-12 w-full p-3 flex flex-row bg-zinc-700 align-center justify-between">
+        <h1>{title}</h1>
+        <section className="flex flex-row gap-3">
+          {actions.map(({ iconName, actionDescription }) => {
+            const className = `icon-btn ${getActiveActionStyle(iconName)}`;
 
-          return <button
-            onClick={() => handleClick(value)}
-            key={value}
-            className={className}
-            title={getButtonTitle(value)}
-          >
-            <Icon name={value} />
-          </button>
-        })}
+            return (
+              <button
+                onClick={() => handleClick(iconName)}
+                key={iconName}
+                className={className}
+                title={actionDescription}
+              >
+                <Icon name={iconName} />
+              </button>
+            );
+          })}
+        </section>
+      </header>
+      <section
+        aria-hidden={!activeActionNode}
+        className={`fixed z-20 ${
+          activeActionNode ? "top-12" : "top-0"
+        } h-12 w-full bg-zinc-500 duration-200`}
+      >
+        {activeActionNode?.actionNode}
       </section>
-    </header>
-    <section aria-hidden={!activeAction} className={`fixed z-20 ${activeAction ? "top-12" : "top-0"} h-12 w-full bg-zinc-500 duration-200`}>
-        
-    </section>
     </>
-  )
+  );
 }

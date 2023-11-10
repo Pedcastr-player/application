@@ -1,14 +1,15 @@
-import { Header } from "../Header"
+import { Header, HeaderProps } from "@/components/Header";
 
 type Props = {
-  children: React.ReactNode
-}
+  headerSettings: HeaderProps;
+  children: React.ReactNode;
+};
 
-export default function Layout({ children }: Props) {
+export default function Layout({ headerSettings, children }: Props) {
   return (
     <>
-      <Header />
+      <Header {...headerSettings} />
       <main className="pt-12">{children}</main>
     </>
-  )
+  );
 }

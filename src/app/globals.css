@@ -6,10 +6,25 @@ body {
   color: white;
 }
 
+input {
+  @apply pl-3;
+}
+
 .icon-btn svg {
   @apply hover:fill-amber-200;
 }
 
 .icon-btn-active svg {
   @apply fill-amber-400;
+}
+
+input.input {
+  @apply border-b border-amber-200 outline-none 
+    hover:border-amber-400 hover:border-b-2
+    focus:border-amber-400 focus:border-b-2 focus:shadow-lg
+    duration-100 ease-linear;
+}
+
+button.btn {
+  @apply text-amber-200 hover:text-amber-400;
 }
