@@ -1,8 +1,18 @@
+"use client";
+
 import { Layout } from "@/components/Layout";
 import { HeaderActionProps } from "@/components/Header/Header";
 import { Dropdown } from "@/components/Dropdown";
+import { useState } from "react";
+
+enum SortOptions {
+  name = "Name",
+  added = "Recently Added",
+  episode = "Recent Episode",
+}
 
 export default function Home() {
+  const [sort, setSort] = useState<SortOptions>(SortOptions.added);
   // const [url, setUrl] = useState("");
 
   // async function getFeed(e: React.MouseEvent<HTMLButtonElement>) {
@@ -26,19 +36,13 @@ export default function Home() {
         <section className="flex items-center justify-between p-2 px-3">
           <p className="text-sm">Order By:</p>
           <Dropdown.Root>
-            <Dropdown.Trigger>Order By</Dropdown.Trigger>
-            <Dropdown.Content>
-              <ul className="text-black space-y-1 p-3 text-right">
-                <li>
-                  <button className="btn w-full">Recently Added</button>
-                </li>
-                <li>
-                  <button className="btn w-full">Recent Episode</button>
-                </li>
-                <li>
-                  <button className="btn w-full">Name</button>
-                </li>
-              </ul>
+            <Dropdown.Trigger>{sort}</Dropdown.Trigger>
+            <Dropdown.Content className="text-black space-y-1 p-3">
+              {Object.values(SortOptions).map((option) => (
+                <Dropdown.Item key={option} onClick={() => setSort(option)}>
+                  {option}
+                </Dropdown.Item>
+              ))}
             </Dropdown.Content>
           </Dropdown.Root>
         </section>
