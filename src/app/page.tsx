@@ -23,19 +23,21 @@ export default function Home() {
       iconName: "list",
       actionDescription: "List Options",
       actionNode: (
-        <section className="flex items-center justify-between p-3">
+        <section className="flex items-center justify-between p-2 px-3">
           <p className="text-sm">Order By:</p>
           <Dropdown.Root>
-            <Dropdown.Trigger>
-              <button id="button" className="text-sm btn">
-                Order By
-              </button>
-            </Dropdown.Trigger>
+            <Dropdown.Trigger>Order By</Dropdown.Trigger>
             <Dropdown.Content>
-              <ul className="text-black p-3 text-right">
-                <li>Recently Added</li>
-                <li>Recent Episode</li>
-                <li>Name</li>
+              <ul className="text-black space-y-1 p-3 text-right">
+                <li>
+                  <button className="btn">Recently Added</button>
+                </li>
+                <li>
+                  <button className="btn">Recent Episode</button>
+                </li>
+                <li>
+                  <button className="btn">Name</button>
+                </li>
               </ul>
             </Dropdown.Content>
           </Dropdown.Root>

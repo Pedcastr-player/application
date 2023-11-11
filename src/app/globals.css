@@ -26,5 +26,9 @@ input.input {
 }
 
 button.btn {
-  @apply text-amber-200 hover:text-amber-400;
+  @apply p-1 text-amber-200 border border-transparent hover:text-amber-400  hover:border-amber-50;
+}
+
+button.btn.active {
+  @apply text-amber-400 underline underline-offset-4;
 }
