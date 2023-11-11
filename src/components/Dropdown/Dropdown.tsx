@@ -76,8 +76,6 @@ export function DropdownRoot({ children }: PropsWithChildren) {
         const triggerRect = triggerRef.current.getBoundingClientRect();
         const childrenRect = childrenRef.current.getBoundingClientRect();
 
-        console.log(triggerRect, childrenRect);
-
         setPosition({
           x: triggerRect.right - childrenRect.width + 10,
           y: childrenRect.height - triggerRect.height - 6,
@@ -90,8 +88,6 @@ export function DropdownRoot({ children }: PropsWithChildren) {
     window.addEventListener("resize", getDropdownPosition);
     return () => window.removeEventListener("resize", getDropdownPosition);
   }, [open]);
-
-  console.log(position);
 
   return (
     <DropdownContext.Provider

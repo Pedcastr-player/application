@@ -30,13 +30,13 @@ export default function Home() {
             <Dropdown.Content>
               <ul className="text-black space-y-1 p-3 text-right">
                 <li>
-                  <button className="btn">Recently Added</button>
+                  <button className="btn w-full">Recently Added</button>
                 </li>
                 <li>
-                  <button className="btn">Recent Episode</button>
+                  <button className="btn w-full">Recent Episode</button>
                 </li>
                 <li>
-                  <button className="btn">Name</button>
+                  <button className="btn w-full">Name</button>
                 </li>
               </ul>
             </Dropdown.Content>
