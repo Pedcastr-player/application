@@ -43,11 +43,7 @@ export default function Footer() {
             size={32}
             className={`icon-btn ${isActive ? "active" : ""}`}
           />
-          <span
-            className={`text-xs ${
-              isActive ? "text-amber-400" : "group-hover:text-amber-200"
-            }`}
-          >
+          <span className={`text-xs text-hover ${isActive ? "active" : ""}`}>
             {name}
           </span>
         </Link>

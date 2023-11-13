@@ -30,7 +30,7 @@ export function DropdownTrigger({ children }: PropsWithChildren) {
   const { triggerRef, open, onToggleModal } = useContext(DropdownContext);
   return (
     <button
-      className={`text-sm btn ${open && "active"}`}
+      className={`text-sm btn ${open ? "active" : ""}`}
       ref={triggerRef}
       onClick={onToggleModal}
     >

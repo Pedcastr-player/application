@@ -15,7 +15,7 @@ input {
 }
 
 .icon-btn.active {
-  @apply fill-amber-400;
+  @apply fill-amber-400 group-hover:fill-amber-400;
 }
 
 input.input {
@@ -31,4 +31,12 @@ button.btn {
 
 button.btn.active {
   @apply text-amber-400 underline underline-offset-4;
+}
+
+.text-hover {
+  @apply hover:text-amber-200 group-hover:text-amber-200;
+}
+
+.text-hover.active {
+  @apply text-amber-400 hover:text-amber-400 group-hover:text-amber-400;
 }
