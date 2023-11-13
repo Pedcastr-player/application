@@ -3,6 +3,7 @@ import { Roboto_Mono } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import Layout from "@/components/Layout/Layout";
+import { Footer } from "@/components/Footer";
 
 const roboto = Roboto_Mono({ subsets: ["latin"] });
 
@@ -18,7 +19,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={roboto.className}>{children}</body>
+      <body className={roboto.className}>
+        {children}
+        <Footer />
+      </body>
     </html>
   );
 }

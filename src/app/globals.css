@@ -10,11 +10,11 @@ input {
   @apply pl-3;
 }
 
-.icon-btn svg {
-  @apply hover:fill-amber-200;
+.icon-btn {
+  @apply hover:fill-amber-200 group-hover:fill-amber-200;
 }
 
-.icon-btn-active svg {
+.icon-btn.active {
   @apply fill-amber-400;
 }
 

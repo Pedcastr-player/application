@@ -26,7 +26,7 @@ export default function Header({ title, actions }: HeaderProps) {
   }
 
   function getActiveActionStyle(value: IconName) {
-    return value === activeAction ? "icon-btn-active" : "";
+    return value === activeAction ? "active" : "";
   }
 
   const activeActionNode = actions.find(
@@ -35,7 +35,7 @@ export default function Header({ title, actions }: HeaderProps) {
 
   return (
     <>
-      <header className="fixed z-30 h-12 w-full p-3 flex flex-row bg-zinc-700 align-center justify-between">
+      <header className="fixed z-30 h-12 w-full p-3 flex flex-row bg-zinc-700 items-center justify-between">
         <h1>{title}</h1>
         <section className="flex flex-row gap-3">
           {actions.map(({ iconName, actionDescription }) => {
@@ -45,10 +45,9 @@ export default function Header({ title, actions }: HeaderProps) {
               <button
                 onClick={() => handleClick(iconName)}
                 key={iconName}
-                className={className}
                 title={actionDescription}
               >
-                <Icon name={iconName} />
+                <Icon name={iconName} className={className} />
               </button>
             );
           })}
