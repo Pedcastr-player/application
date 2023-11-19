@@ -1,4 +1,4 @@
-import { AddBar, FilterBar, SortBar } from "@/pages/podcasts";
+import { AddBar, FilterBar, SortBar } from "./_components";
 
 import { Layout } from "@/components/Layout";
 import { HeaderActionProps } from "@/components/Header/Header";

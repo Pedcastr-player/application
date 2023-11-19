@@ -30,6 +30,7 @@ export default function AddBar() {
           debouncedGetFeed();
         }}
       />
+      <section className="fixed left-0 top-24 z-40 bg-zinc-400 h-36 w-full"></section>
     </div>
   );
 }
