@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.8.4",
+    "@tanstack/react-query-devtools": "^5.8.4",
     "@types/xml2js": "^0.4.13",
     "lodash": "^4.17.21",
     "next": "13.5.6",

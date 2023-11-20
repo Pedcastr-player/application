@@ -4,6 +4,7 @@ import "./globals.css";
 import { Header } from "@/components/Header";
 import Layout from "@/components/Layout/Layout";
 import { Footer } from "@/components/Footer";
+import Providers from "./provider";
 
 const roboto = Roboto_Mono({ subsets: ["latin"] });
 
@@ -20,8 +21,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={roboto.className}>
-        {children}
-        <Footer />
+        <Providers>
+          {children}
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

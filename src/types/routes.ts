@@ -1,7 +1,7 @@
 import { IconName } from "@/components/Icon";
 
 export enum Routes {
-  Home = "/",
+  Home = "/podcasts",
   Playlists = "/playlists",
   Settings = "/settings",
 }
