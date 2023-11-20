@@ -1,7 +1,6 @@
 "use client";
 
 import { Icon } from "@/components/Icon";
-import { ReactQueryHydrate } from "@/components/ReactQueryHydrate";
 import useDebounce from "@/hooks/useDebounce";
 import { FeedSummaryProps } from "@/types/feed";
 import { useQuery } from "@tanstack/react-query";
@@ -43,8 +42,6 @@ export default function AddBar() {
   const debouncedGetFeed = useDebounce({
     callback: refetch,
   });
-
-  console.log(feed, error);
 
   const renderLoadingMessage = () => {
     if (isLoading) {
