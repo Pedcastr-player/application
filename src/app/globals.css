@@ -25,6 +25,13 @@ input.input {
     duration-100 ease-linear;
 }
 
+input.input.error {
+  @apply border-b-2 border-red-300 outline-none text-red-200
+    hover:border-red-500 
+    focus:border-red-500 shadow-lg
+    duration-100 ease-linear;
+}
+
 button.btn {
   @apply p-1 text-amber-200 border border-transparent hover:text-amber-400  hover:border-amber-50;
 }

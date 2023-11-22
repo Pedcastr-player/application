@@ -1,4 +1,5 @@
-import { FeedSummaryProps } from "@/types/feed";
+import { AppError, handleError } from "@/services/errorHandler";
+import { NextRequest, NextResponse } from "next/server";
 
 const xml2js = require("xml2js");
 
@@ -6,9 +7,20 @@ const parser = new xml2js.Parser({
   includeWhiteChars: true,
 });
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest, res: NextResponse) {
   try {
     const { url } = await req.json();
+
+    const regex = /feed/i;
+
+    if (!regex.test(url)) {
+      throw new AppError({
+        error: "ERR_INVALID_URL",
+        message: "A valid URL should have a feed endpoint",
+        status: 400,
+      });
+    }
+
     const response = await fetch(url);
     const content = await response.text();
 
@@ -22,11 +34,17 @@ export async function POST(req: Request) {
       cover: feed["itunes:image"][0]["$"].href,
     };
 
-    return new Response(JSON.stringify(payload), {
-      status: 200,
-    });
+    return NextResponse.json(payload);
   } catch (e) {
-    console.error(e);
-    return new Response("Error fetching the feed", { status: 500 });
+    if (e instanceof TypeError) {
+      return handleError(e, {
+        error: "ERR_INVALID_URL",
+        message: "Failed to parse URL",
+        status: 400,
+      });
+    }
+    if (e instanceof AppError) {
+      return handleError(e);
+    }
   }
 }

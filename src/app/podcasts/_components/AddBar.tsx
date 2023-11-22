@@ -1,16 +1,20 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+
 import { Icon } from "@/components/Icon";
 import useDebounce from "@/hooks/useDebounce";
 import { FeedSummaryProps } from "@/types/feed";
-import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { AppError } from "@/services/errorHandler";
+import { ErrorPayload } from "@/types";
 
 export default function AddBar() {
   const [url, setUrl] = useState("");
+  const [inputError, setInputError] = useState(false);
   const [debouncedUrl, setDebouncedUrl] = useState("");
 
-  const debounced = useDebounce({
+  const debounceSetUrl = useDebounce({
     callback: () => {
       setDebouncedUrl(url);
     },
@@ -21,38 +25,52 @@ export default function AddBar() {
     refetch,
     error,
     isLoading,
-  } = useQuery<FeedSummaryProps | undefined>({
+  } = useQuery<FeedSummaryProps | undefined, ErrorPayload>({
     queryKey: ["feed", debouncedUrl],
     queryFn: getFeed,
     enabled: !!debouncedUrl.length,
   });
 
   async function getFeed() {
-    if (!debouncedUrl.length) return {};
     const response = await fetch("/api/feeds", {
       method: "POST",
       body: JSON.stringify({
         url: debouncedUrl,
       }),
     });
+
     const payload = await response.json();
+
+    if (!response.ok) {
+      setInputError(true);
+      throw new AppError(payload);
+    }
+
     return payload;
   }
 
-  const debouncedGetFeed = useDebounce({
-    callback: refetch,
-  });
+  useEffect(() => {
+    if (debouncedUrl.length) {
+      refetch();
+    }
+  }, [debouncedUrl, refetch]);
 
   const renderLoadingMessage = () => {
     if (isLoading) {
       return (
         <>
-          <div className=" bg-zinc-500 w-[120px] h-[120px]" />
+          <div className="bg-zinc-500 w-[120px] h-[120px]" />
           <section className="flex flex-col">
             <h1 className="text-sm">Retrieving feed information...</h1>
           </section>
         </>
       );
+    }
+  };
+
+  const renderErrorMessage = () => {
+    if (error?.message) {
+      return <h1>{error.message}</h1>;
     }
   };
 
@@ -81,17 +99,21 @@ export default function AddBar() {
   return (
     <div className="flex items-center p-3">
       <input
-        className="bg-transparent input w-full text-sm"
+        className={`bg-transparent input ${
+          inputError ? "error" : ""
+        } w-full text-sm`}
         placeholder="Add a feed URL here"
+        value={url}
         onChange={(e) => {
+          setInputError(false);
           setUrl(e.target.value);
-          debounced();
-          debouncedGetFeed();
+          debounceSetUrl();
         }}
       />
-      {(feed || isLoading) && (
-        <section className="fixed left-0 top-24 z-40 bg-zinc-400 h-36 w-full flex flex-row p-3 space-x-3">
+      {(feed || isLoading || error) && (
+        <section className="fixed left-0 top-24 z-40 bg-zinc-400 w-full flex flex-row p-3 space-x-3">
           {renderLoadingMessage()}
+          {renderErrorMessage()}
           {renderFeedCard()}
         </section>
       )}
