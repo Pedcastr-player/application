@@ -5,9 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 
 import { Icon } from "@/components/Icon";
 import useDebounce from "@/hooks/useDebounce";
-import { FeedSummaryProps } from "@/types/feed";
-import { AppError } from "@/services/errorHandler";
-import { ErrorPayload } from "@/types";
+import { FeedSummary } from "@/types";
+import { AppError } from "@/globals/errorHandlers";
 
 export default function AddBar() {
   const [url, setUrl] = useState("");
@@ -25,7 +24,7 @@ export default function AddBar() {
     refetch,
     error,
     isLoading,
-  } = useQuery<FeedSummaryProps | undefined, ErrorPayload>({
+  } = useQuery<FeedSummary | undefined>({
     queryKey: ["feed", debouncedUrl],
     queryFn: getFeed,
     enabled: !!debouncedUrl.length,

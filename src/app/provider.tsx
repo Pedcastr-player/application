@@ -1,9 +1,10 @@
 "use client";
 
-import { ErrorPayload } from "@/types";
+import { PropsWithChildren, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { PropsWithChildren, useState } from "react";
+
+import { AppErrorProps } from "@/types";
 
 export default function Providers({ children }: PropsWithChildren) {
   const [client] = useState(
@@ -13,7 +14,7 @@ export default function Providers({ children }: PropsWithChildren) {
           queries: {
             staleTime: 60 * 1000,
             retry(failureCount, error) {
-              const { status } = error as unknown as ErrorPayload;
+              const { status } = error as AppErrorProps;
               return status === 408 && failureCount < 3;
             },
           },
