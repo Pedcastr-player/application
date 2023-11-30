@@ -12,5 +12,5 @@ const appErrorSchema = z.object({
 export type AppErrorProps = z.infer<typeof appErrorSchema>;
 
 export function isAppErrorProps(object: unknown): object is AppErrorProps {
-  return !!appErrorSchema.safeParse(object).success;
+  return !!appErrorSchema.parse(object);
 }

@@ -41,7 +41,7 @@ export default class FeedsService {
 
   private async getFeed(url: string): Promise<FeedSummary | undefined> {
     try {
-      this.validateUrl(url);
+      await this.validateUrl(url);
 
       const response = await fetch(url);
 
@@ -49,25 +49,21 @@ export default class FeedsService {
 
       return feed;
     } catch (e) {
+      console.log("getFeed error: ", e);
       throw new AppError(e);
     }
   }
 
   public async getFeedSummary(url: string) {
-    try {
-      const feed = await this.getFeed(url);
-
-      if (isFeedResponse(feed)) {
-        return this.itunesService.getSummary(feed);
-      }
-
-      throw new AppError({
-        name: "ERR_INVALID_URL",
-        message: "This URL is not from a podcast feed",
-        status: 400,
-      });
-    } catch (e) {
-      throw new AppError(e);
+    const feed = await this.getFeed(url);
+    if (isFeedResponse(feed)) {
+      return this.itunesService.getSummary(feed);
     }
+
+    throw new AppError({
+      name: "ERR_INVALID_URL",
+      message: "This URL is not from a podcast feed",
+      status: 400,
+    });
   }
 }

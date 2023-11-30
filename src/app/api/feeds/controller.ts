@@ -7,14 +7,10 @@ export default class FeedsController {
   feedsService = new FeedsService();
 
   public async getFeedSummary(req: NextRequest) {
-    try {
-      const { url } = await req.json();
+    const { url } = await req.json();
 
-      const payload = await this.feedsService.getFeedSummary(url);
+    const payload = await this.feedsService.getFeedSummary(url);
 
-      return NextResponse.json(payload);
-    } catch (e) {
-      return getErrorResponse(e);
-    }
+    return NextResponse.json(payload);
   }
 }

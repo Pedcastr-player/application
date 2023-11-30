@@ -9,5 +9,5 @@ const feedSummarySchema = z.object({
 export type FeedSummary = z.infer<typeof feedSummarySchema>;
 
 export function isFeedSummary(object: unknown): object is FeedSummary {
-  return !!feedSummarySchema.safeParse(object).success;
+  return !!feedSummarySchema.parse(object);
 }

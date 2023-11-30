@@ -1,9 +1,13 @@
-import { getErrorResponse } from "@/globals/errorHandlers";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import FeedsController from "./controller";
+import { withErrorHandler } from "@/middlewares";
 
 const feedsController = new FeedsController();
 
 export async function POST(req: NextRequest) {
-  return await feedsController.getFeedSummary(req);
+  async function getFeedSummary(req: NextRequest) {
+    return await feedsController.getFeedSummary(req);
+  }
+
+  return withErrorHandler(req)(getFeedSummary);
 }
