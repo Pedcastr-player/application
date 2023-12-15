@@ -1,6 +1,6 @@
 import { FeedResponse, FeedSummary, ITUNES } from "@/types";
 
-export default class ItunesService {
+export default class ITunesService {
   public getSummary(feed: FeedResponse): FeedSummary {
     return {
       title: feed[ITUNES.SUBTITLE][0],

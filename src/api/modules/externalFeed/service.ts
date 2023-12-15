@@ -1,14 +1,16 @@
 import Xml2js from "xml2js";
+
 import { AppError } from "@/globals/errorHandlers";
-import ItunesService from "@/services/itunes";
-import { FeedSummary, isFeedResponse } from "@/types";
+import { ErrorCodeEnum, FeedResponse, isFeedResponse } from "@/types";
+
+import { ITunesService } from "../iTunes";
 
 const xmlParser = new Xml2js.Parser({
   includeWhiteChars: true,
 });
 
-export default class FeedsService {
-  itunesService = new ItunesService();
+export default class ExternalFeedService {
+  itunesService = new ITunesService();
 
   private async parseXml(response: Response) {
     try {
@@ -18,7 +20,7 @@ export default class FeedsService {
     } catch (e) {
       if (e instanceof TypeError) {
         throw new AppError({
-          name: "ERR_INVALID_URL",
+          name: ErrorCodeEnum.enum.ERR_INVALID_URL,
           message: "Failed to parse URL",
           status: 400,
         });
@@ -32,38 +34,32 @@ export default class FeedsService {
 
     if (!regex.test(url)) {
       throw new AppError({
-        name: "ERR_INVALID_URL",
+        name: ErrorCodeEnum.enum.ERR_INVALID_URL,
         message: "A valid URL should have a feed on its address",
         status: 400,
       });
     }
   }
 
-  private async getFeed(url: string): Promise<FeedSummary | undefined> {
-    try {
-      await this.validateUrl(url);
+  public async getFeed(url: string): Promise<FeedResponse> {
+    await this.validateUrl(url);
+    const response = await fetch(url);
 
-      const response = await fetch(url);
-
-      const feed = await this.parseXml(response);
-
+    const feed = await this.parseXml(response);
+    if (isFeedResponse(feed)) {
       return feed;
-    } catch (e) {
-      console.log("getFeed error: ", e);
-      throw new AppError(e);
     }
+
+    throw new AppError({
+      name: ErrorCodeEnum.enum.ERR_INVALID_URL,
+      message: "This URL is not from a podcast feed",
+      status: 400,
+    });
   }
 
   public async getFeedSummary(url: string) {
     const feed = await this.getFeed(url);
-    if (isFeedResponse(feed)) {
-      return this.itunesService.getSummary(feed);
-    }
 
-    throw new AppError({
-      name: "ERR_INVALID_URL",
-      message: "This URL is not from a podcast feed",
-      status: 400,
-    });
+    return this.itunesService.getSummary(feed);
   }
 }

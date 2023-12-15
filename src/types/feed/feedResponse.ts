@@ -12,5 +12,5 @@ const feedResponseSchema = z.object({
 export type FeedResponse = z.infer<typeof feedResponseSchema>;
 
 export function isFeedResponse(object: unknown): object is FeedResponse {
-  return !!feedResponseSchema.parse(object);
+  return !!feedResponseSchema.safeParse(object).success;
 }

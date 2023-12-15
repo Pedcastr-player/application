@@ -1,13 +1,12 @@
 import { NextRequest } from "next/server";
-import FeedsController from "./controller";
-import { withErrorHandler } from "@/middlewares";
 
-const feedsController = new FeedsController();
+import { ExternalFeedController } from "@/api/modules/externalFeed";
+import { handler, withErrorHandler } from "@/api/middlewares";
 
-export async function POST(req: NextRequest) {
-  async function getFeedSummary(req: NextRequest) {
-    return await feedsController.getFeedSummary(req);
-  }
+const externalFeedController = new ExternalFeedController();
 
-  return withErrorHandler(req)(getFeedSummary);
+async function getFeedSummary(req: NextRequest) {
+  return await externalFeedController.getFeedSummary(req);
 }
+
+export const POST = handler(getFeedSummary);

@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { getErrorResponse } from "@/globals/errorHandlers";
-import FeedsService from "./service";
+import { ExternalFeedService } from ".";
 
-export default class FeedsController {
-  feedsService = new FeedsService();
+export default class ExternalFeedController {
+  feedsService = new ExternalFeedService();
 
   public async getFeedSummary(req: NextRequest) {
     const { url } = await req.json();
