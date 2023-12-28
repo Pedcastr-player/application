@@ -6,12 +6,12 @@ class AppError implements AppErrorProps {
   readonly status?: number;
 
   constructor(error?: unknown) {
+    console.error(error);
     if (isAppErrorProps(error)) {
       this.message = error.message;
       this.name = error.name;
       this.status = error.status;
     } else {
-      console.error(error);
       this.name = "ERR_UNKNOWN";
       this.message = "Something went wrong";
       this.status = 500;
