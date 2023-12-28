@@ -1,2 +1,2 @@
-export { handler } from "./middleware";
+export { handler } from "./handler";
 export { default as withErrorHandler } from "./withErrorHandler";

@@ -11,6 +11,7 @@ class AppError implements AppErrorProps {
       this.name = error.name;
       this.status = error.status;
     } else {
+      console.error(error);
       this.name = "ERR_UNKNOWN";
       this.message = "Something went wrong";
       this.status = 500;

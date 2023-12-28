@@ -1,33 +1,11 @@
-import Xml2js from "xml2js";
-
 import { AppError } from "@/globals/errorHandlers";
 import { ErrorCodeEnum, FeedResponse, isFeedResponse } from "@/types";
-
 import { ITunesService } from "../iTunes";
-
-const xmlParser = new Xml2js.Parser({
-  includeWhiteChars: true,
-});
+import ParserService from "../parser/service";
 
 export default class ExternalFeedService {
   itunesService = new ITunesService();
-
-  private async parseXml(response: Response) {
-    try {
-      const content = await response.text();
-      const data = await xmlParser.parseStringPromise(content);
-      return data.rss.channel[0];
-    } catch (e) {
-      if (e instanceof TypeError) {
-        throw new AppError({
-          name: ErrorCodeEnum.enum.ERR_INVALID_URL,
-          message: "Failed to parse URL",
-          status: 400,
-        });
-      }
-      throw new AppError(e);
-    }
-  }
+  parserService = new ParserService();
 
   private async validateUrl(url: string) {
     const regex = /feed/i;
@@ -45,7 +23,7 @@ export default class ExternalFeedService {
     await this.validateUrl(url);
     const response = await fetch(url);
 
-    const feed = await this.parseXml(response);
+    const feed = await this.parserService.parseXml(response);
     if (isFeedResponse(feed)) {
       return feed;
     }

@@ -9,4 +9,4 @@ async function getFeedSummary(req: NextRequest) {
   return await externalFeedController.getFeedSummary(req);
 }
 
-export const POST = handler(getFeedSummary);
+export const POST = handler(withErrorHandler, getFeedSummary);
