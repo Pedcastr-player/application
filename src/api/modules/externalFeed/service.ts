@@ -2,7 +2,6 @@ import { AppError } from "@/globals/errorHandlers";
 import { ErrorCodeEnum, FeedResponse, isFeedResponse } from "@/types";
 import { ITunesService } from "../iTunes";
 import ParserService from "../parser/service";
-import { Logger } from "@/globals/Logger";
 
 export default class ExternalFeedService {
   private async validateUrl(url: string) {

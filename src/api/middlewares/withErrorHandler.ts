@@ -1,6 +1,7 @@
+import { NextResponse } from "next/server";
+
 import { getErrorResponse } from "@/globals/errorHandlers";
-import { Middleware } from "@/types/middleware";
-import { NextRequest, NextResponse } from "next/server";
+import { Middleware, NextRequest } from "@/types";
 
 export default async function withErrorHandler(
   req: NextRequest,
@@ -9,7 +10,9 @@ export default async function withErrorHandler(
 ) {
   try {
     if (next) return await next(req, res);
-    throw new Error("You need to pass another method next to withErrorHandler");
+    throw new Error(
+      "You need to pass another method following withErrorHandler"
+    );
   } catch (e) {
     return getErrorResponse(e);
   }

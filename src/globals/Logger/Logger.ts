@@ -1,29 +1,17 @@
-export default class Logger {
-  static debug(...data: any[]) {
-    if (process.env.NODE_ENV !== "production") {
-      console.log("[DEBUG]", ...data);
-    }
-  }
+import pino from "pino";
+import pretty from "pino-pretty";
 
-  static warn(message: string) {
-    if (process.env.NODE_ENV !== "production") {
-      console.warn("[WARNING]", message);
-    }
-  }
+const stream = pretty({
+  colorize: true,
+  ignore: "hostname,pid",
+});
 
-  static error(message: string) {
-    if (process.env.NODE_ENV !== "production") {
-      console.error("[ERROR]", message);
-    }
-  }
+const rootLogger = pino(
+  {
+    name: "Logger",
+    level: process.env.NODE_ENV === "production" ? "info" : "debug",
+  },
+  stream
+);
 
-  static tabulate(obj: object) {
-    if (process.env.NODE_ENV !== "production") {
-      console.table(obj);
-    }
-  }
-
-  static clear = () => {
-    console.clear();
-  };
-}
+export default rootLogger;
