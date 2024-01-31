@@ -7,7 +7,7 @@ import { AbstractService } from "@/api/abstracts";
 export default class ExternalFeedService extends AbstractService {
   parserService = new ParserService(this.logger);
   private async validateUrl(url: string) {
-    this.logger.info("Validating URL...");
+    this.logger.debug("Validating URL...");
     const httpsString = "https://";
     const urlHasHttps = url.includes(httpsString);
     const formattedUrl = urlHasHttps ? url : httpsString + url;
@@ -53,7 +53,7 @@ export default class ExternalFeedService extends AbstractService {
   public async getFeedSummary(url: string) {
     const feed = await this.getFeed(url);
 
-    this.logger.info("Formatting payload...");
+    this.logger.debug("Formatting payload...");
     return ITunesService.getSummary(feed);
   }
 }

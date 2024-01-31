@@ -10,7 +10,7 @@ const xmlParser = new Xml2js.Parser({
 
 export default class ParserService extends AbstractService {
   async parseXml(response: Response) {
-    this.logger.info("Parsing XML into JSON...");
+    this.logger.debug("Parsing XML into JSON...");
     // This error is hardcoded because it was picked by manual testing from Xml2js API
     const serviceError = "Invalid character in entity name";
 
