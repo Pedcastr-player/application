@@ -4,14 +4,13 @@ import { NextRequest } from "@/types";
 import { ExternalFeedService } from ".";
 
 export default class ExternalFeedController {
-  feedsService = new ExternalFeedService();
-
   public async getFeedSummary(req: NextRequest) {
-    req.logger.info("getFeedSummary");
     const { url } = await req.json();
 
-    const payload = await this.feedsService.getFeedSummary(url);
+    const feedsService = new ExternalFeedService(req.logger);
+    const payload = await feedsService.getFeedSummary(url);
 
+    req.logger.info("Feed Summary retrieved!");
     return NextResponse.json(payload);
   }
 }

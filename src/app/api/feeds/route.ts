@@ -1,9 +1,5 @@
 import { ExternalFeedController } from "@/api/modules/externalFeed";
-import {
-  handler,
-  withErrorHandler,
-  withLoggerHandler,
-} from "@/api/middlewares";
+import { handler, withErrorHandler } from "@/api/middlewares";
 import { NextRequest } from "@/types";
 
 const externalFeedController = new ExternalFeedController();
@@ -12,8 +8,4 @@ async function getFeedSummary(req: NextRequest) {
   return await externalFeedController.getFeedSummary(req);
 }
 
-export const POST = handler(
-  withLoggerHandler,
-  withErrorHandler,
-  getFeedSummary
-);
+export const POST = handler(withErrorHandler, getFeedSummary);

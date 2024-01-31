@@ -2,9 +2,12 @@ import { AppError } from "@/globals/errorHandlers";
 import { ErrorCodeEnum, FeedResponse, isFeedResponse } from "@/types";
 import { ITunesService } from "../iTunes";
 import ParserService from "../parser/service";
+import { AbstractService } from "@/api/abstracts";
 
-export default class ExternalFeedService {
+export default class ExternalFeedService extends AbstractService {
+  parserService = new ParserService(this.logger);
   private async validateUrl(url: string) {
+    this.logger.info("Validating URL...");
     const httpsString = "https://";
     const urlHasHttps = url.includes(httpsString);
     const formattedUrl = urlHasHttps ? url : httpsString + url;
@@ -35,7 +38,7 @@ export default class ExternalFeedService {
     const validatedUrl = await this.validateUrl(url);
     const response = await fetch(validatedUrl);
 
-    const feed = await ParserService.parseXml(response);
+    const feed = await this.parserService.parseXml(response);
     if (isFeedResponse(feed)) {
       return feed;
     }
@@ -50,6 +53,7 @@ export default class ExternalFeedService {
   public async getFeedSummary(url: string) {
     const feed = await this.getFeed(url);
 
+    this.logger.info("Formatting payload...");
     return ITunesService.getSummary(feed);
   }
 }

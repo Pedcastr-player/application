@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-import { Middleware } from "@/types/middleware";
+import { Middleware, NextRequest } from "@/types";
 
 export function handler(...middleware: Middleware[]) {
   return async (req: NextRequest, res: NextResponse) => {

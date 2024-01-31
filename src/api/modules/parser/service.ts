@@ -2,13 +2,16 @@ import Xml2js from "xml2js";
 
 import { AppError } from "@/globals/errorHandlers";
 import { ErrorCodeEnum } from "@/types";
+import { AbstractService } from "@/api/abstracts";
 
 const xmlParser = new Xml2js.Parser({
   includeWhiteChars: true,
 });
 
-export default class ParserService {
-  static async parseXml(response: Response) {
+export default class ParserService extends AbstractService {
+  async parseXml(response: Response) {
+    this.logger.info("Parsing XML into JSON...");
+    // This error is hardcoded because it was picked by manual testing from Xml2js API
     const serviceError = "Invalid character in entity name";
 
     try {
