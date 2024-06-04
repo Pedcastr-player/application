@@ -33,7 +33,7 @@ input.input.error {
 }
 
 button.btn {
-  @apply p-1 text-amber-200 border border-transparent hover:text-amber-400  hover:border-amber-50;
+  @apply p-1 text-amber-200 border border-transparent hover:text-amber-400  hover:border-b-amber-50;
 }
 
 button.btn.active {

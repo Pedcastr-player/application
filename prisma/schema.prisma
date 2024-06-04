@@ -1,0 +1,89 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id        Int                  @id @default(autoincrement())
+  username  String               @unique
+  password  String
+  playlists Playlist?
+  podcasts  UserFollowsPodcast[]
+}
+
+model Podcast {
+  id              Int                  @id @default(autoincrement())
+  author          String
+  email           String
+  name            String
+  summary         String?
+  link            String
+  category        String
+  image           String
+  language        String
+  isExplicit      Boolean              @map("is_explicit")
+  lastPublishedAt DateTime             @map("last_published_at")
+  users           UserFollowsPodcast[]
+}
+
+model Episode {
+  id          Int                  @id @default(autoincrement())
+  title       String
+  summary     String?
+  description String?
+  duration    String
+  image       String?
+  publishedAt DateTime             @map("published_at")
+  link        String
+  playlists   PlaylistHasEpisode[]
+}
+
+model Playlist {
+  id       Int                  @id @default(autoincrement())
+  userId   Int                  @unique @map("user_id")
+  name     String
+  users    User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  episodes PlaylistHasEpisode[]
+}
+
+model UserFollowsPodcast {
+  userId    Int     @map("user_id")
+  podcastId Int     @map("podcast_id")
+  users     User    @relation(fields: [userId], references: [id])
+  podcasts  Podcast @relation(fields: [podcastId], references: [id])
+
+  @@unique([userId, podcastId])
+  @@map("user_follows_podcast")
+}
+
+model PlaylistHasEpisode {
+  playlistId Int      @map("playlist_id")
+  episodeId  Int      @map("episode_id")
+  playlists  Playlist @relation(fields: [playlistId], references: [id])
+  episodes   Episode  @relation(fields: [episodeId], references: [id])
+
+  @@unique([playlistId, episodeId])
+  @@map("playlist_has_episode")
+}
+
+model UserListensEpisode {
+  userId       Int     @map("user_id")
+  episodeId    Int     @map("episode_id")
+  pausedAt     Int     @default(0) @map("paused_at")
+  complete     Boolean @default(false)
+  isDownloaded Boolean @default(false) @map("is_downloaded")
+  // estudar pq a necessidade de adicionar as entidades aqui
+
+  @@unique([userId, episodeId])
+  @@map("user_listens_episode")
+}
