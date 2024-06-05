@@ -18,11 +18,12 @@ model User {
   username  String               @unique
   password  String
   playlists Playlist?
-  podcasts  UserFollowsPodcast[]
+  podcasts  Podcast[]
+  episodes  UserListensEpisode[]
 }
 
 model Podcast {
-  id              Int                  @id @default(autoincrement())
+  id              Int      @id @default(autoincrement())
   author          String
   email           String
   name            String
@@ -31,9 +32,9 @@ model Podcast {
   category        String
   image           String
   language        String
-  isExplicit      Boolean              @map("is_explicit")
-  lastPublishedAt DateTime             @map("last_published_at")
-  users           UserFollowsPodcast[]
+  isExplicit      Boolean  @map("is_explicit")
+  lastPublishedAt DateTime @map("last_published_at")
+  users           User[]
 }
 
 model Episode {
@@ -45,44 +46,26 @@ model Episode {
   image       String?
   publishedAt DateTime             @map("published_at")
   link        String
-  playlists   PlaylistHasEpisode[]
+  playlists   Playlist[]
+  users       UserListensEpisode[]
 }
 
 model Playlist {
-  id       Int                  @id @default(autoincrement())
-  userId   Int                  @unique @map("user_id")
+  id       Int       @id @default(autoincrement())
+  userId   Int       @unique @map("user_id")
   name     String
-  users    User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
-  episodes PlaylistHasEpisode[]
-}
-
-model UserFollowsPodcast {
-  userId    Int     @map("user_id")
-  podcastId Int     @map("podcast_id")
-  users     User    @relation(fields: [userId], references: [id])
-  podcasts  Podcast @relation(fields: [podcastId], references: [id])
-
-  @@unique([userId, podcastId])
-  @@map("user_follows_podcast")
-}
-
-model PlaylistHasEpisode {
-  playlistId Int      @map("playlist_id")
-  episodeId  Int      @map("episode_id")
-  playlists  Playlist @relation(fields: [playlistId], references: [id])
-  episodes   Episode  @relation(fields: [episodeId], references: [id])
-
-  @@unique([playlistId, episodeId])
-  @@map("playlist_has_episode")
+  users    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  episodes Episode[]
 }
 
 model UserListensEpisode {
   userId       Int     @map("user_id")
+  user         User    @relation(fields: [userId], references: [id])
   episodeId    Int     @map("episode_id")
+  episode      Episode @relation(fields: [episodeId], references: [id])
   pausedAt     Int     @default(0) @map("paused_at")
   complete     Boolean @default(false)
   isDownloaded Boolean @default(false) @map("is_downloaded")
-  // estudar pq a necessidade de adicionar as entidades aqui
 
   @@unique([userId, episodeId])
   @@map("user_listens_episode")
