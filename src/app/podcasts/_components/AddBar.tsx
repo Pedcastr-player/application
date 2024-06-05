@@ -54,6 +54,10 @@ export default function AddBar() {
     }
   }, [debouncedUrl, refetch]);
 
+  function onSubscribe() {
+    console.log("subscribed to", feed);
+  }
+
   const renderLoadingMessage = () => {
     if (isLoading) {
       return (
@@ -79,13 +83,16 @@ export default function AddBar() {
         <>
           {/* Disabling @next/next/no-img-element rule as we can't know the host for every feed images */}
           {/* eslint-disable-next-line  */}
-          <img src={feed.cover} alt="" className="w-[120px] h-[120px]" />
+          <img src={feed.image} alt="" className="w-[120px] h-[120px]" />
           <section className="flex flex-col">
             <div className="space-y-1">
               <h1 className="text-sm">{feed.title}</h1>
               <h2 className="text-xs">{feed.summary}</h2>
             </div>
-            <button className="btn flex flex-row items-center space-x-1 mt-auto text-sm">
+            <button
+              className="btn flex flex-row items-center space-x-1 mt-auto w-fit text-sm"
+              onClick={onSubscribe}
+            >
               <Icon name="add" size={18} />
               <span>Subscribe</span>
             </button>

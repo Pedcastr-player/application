@@ -1,11 +1,17 @@
 import { FeedResponse, FeedSummary, ITUNES } from "@/types";
 
 export default class ITunesService {
-  static getSummary(feed: FeedResponse): FeedSummary {
+  static getSummary(url: string, feed: FeedResponse): FeedSummary {
     return {
-      title: feed[ITUNES.SUBTITLE][0],
+      author: feed[ITUNES.AUTHOR][0],
+      category: feed[ITUNES.CATEGORY][0]["$"].text,
+      email: feed.managingEditor[0],
+      image: feed[ITUNES.IMAGE][0]["$"].href,
+      language: feed.language[0],
+      lastPublishedAt: feed.lastBuildDate[0],
       summary: feed[ITUNES.SUMMARY][0],
-      cover: feed[ITUNES.IMAGE][0]["$"].href,
+      title: feed[ITUNES.SUBTITLE][0],
+      url,
     };
   }
 }

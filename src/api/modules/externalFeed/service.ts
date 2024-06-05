@@ -39,6 +39,7 @@ export default class ExternalFeedService extends AbstractService {
     const response = await fetch(validatedUrl);
 
     const feed = await this.parserService.parseXml(response);
+    console.log(feed["itunes:category"]);
     if (isFeedResponse(feed)) {
       return feed;
     }
@@ -54,6 +55,6 @@ export default class ExternalFeedService extends AbstractService {
     const feed = await this.getFeed(url);
 
     this.logger.debug("Formatting payload...");
-    return ITunesService.getSummary(feed);
+    return ITunesService.getSummary(url, feed);
   }
 }
